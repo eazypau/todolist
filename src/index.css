@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-red-200
+}
+
+.headerContainer {
+    @apply flex justify-center
+}
+
+.header {
+    @apply w-3/5 bg-white border-2 border-white py-10 text-6xl shadow-lg rounded-xl font-monserrat text-center mt-16
+}
+
+.todosBody {
+    @apply flex flex-col items-center mt-10
+}
+
+.inputContainer {
+    @apply w-6/12 border-b-2 rounded-t-xl border-gray-300 py-4 text-center
+}
+
+.listContainer {
+    @apply w-6/12 bg-white text-lg shadow-lg rounded-b-xl text-center
+}
