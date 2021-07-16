@@ -19,9 +19,25 @@ body {
 }
 
 .inputContainer {
-    @apply w-6/12 border-b-2 rounded-t-xl border-gray-300 py-4 text-center
+    @apply w-10/12 rounded-tl-xl border-gray-300 py-4 text-center
 }
 
 .listContainer {
-    @apply w-6/12 bg-white text-lg shadow-lg rounded-b-xl text-center
+    @apply w-9/12 bg-white text-lg shadow-lg rounded-b-xl text-center
+}
+
+.deleteBtn {
+    @apply border-l-2 py-2 px-3 bg-blue-400 rounded-md shadow-md hover:bg-blue-300
+}
+
+.btnCSS {
+    @apply border-2 border-blue-400 py-2 px-3 bg-blue-400 rounded-md shadow-md
+}
+
+.active {
+    @apply border-2 border-blue-400 bg-blue-200 py-2 px-3 rounded-md shadow-md
+}
+
+.priorityFilter {
+    @apply p-5 border-2 h-80 w-max rounded-md fixed right-0 top-16 bg-white shadow-md
 }
