@@ -23,6 +23,7 @@
           placeholder="Press key in then press Enter to add todos"
           v-model="item"
           @keypress.enter="addTodo"
+          required
         />
 
         <select
@@ -30,6 +31,8 @@
           name="priorityLevel"
           id="priorityLevel"
           v-model="priorityLevel"
+          @keypress.enter="addTodo"
+          required
         >
           <option value="High">High</option>
           <option value="Medium">Medium</option>
@@ -50,7 +53,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr
+          <Table :post="post" v-for="(post, index) in todos" :key="index" />
+          <!-- <tr
             :class="todo.lineItem"
             v-for="(todo, index) in todos"
             :key="index"
@@ -63,7 +67,7 @@
               <button @click="deleteTodo" class="deleteBtn">Delete</button>
               <p class="hidden">{{ todo.id }}</p>
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
@@ -71,7 +75,8 @@
 </template>
 
 <script>
-import { addTodoItem, getTodoItem, deleteTodo } from "../src/firebase/firebase.js";
+import { addTodoItem, getTodoItem } from "../src/firebase/firebase.js";
+import Table from "../src/components/Table.vue";
 
 export default {
   data() {
@@ -85,7 +90,7 @@ export default {
       priorityLevel: "",
     };
   },
-  components: {},
+  components: { Table },
   created() {
     const gettingAllTodos = async () => {
       const gettingAllDocs = await getTodoItem();
@@ -95,10 +100,11 @@ export default {
 
       gettingAllDocs.forEach((doc) => {
         console.log(doc.id, "=>", doc.data());
-        const todosData = doc.data()
-        this.todos.push(todosData)
+        const todosData = doc.data();
+        this.todos.push(todosData);
         console.log("successfully read from firestore");
       });
+
     };
     return gettingAllTodos();
   },
@@ -121,14 +127,7 @@ export default {
       addTodoItem(docId, container);
       console.log("Successfully added");
       this.item = "";
-    },
-    deleteTodo() {
-      const temp = this.todo.id
-      console.log(temp);
-      // deleteTodo(String(this.todos[this.index].id))
-      // this.todos.pop(this.todos[this.index].id);
-      // delete from database here
-      console.log("successfully deleted");
+      this.priorityLevel= ""
     },
     filterHigh() {
       if ((this.highBtn = "btnCSS")) {
@@ -192,9 +191,6 @@ export default {
     },
   },
 };
-
-// This starter template is using Vue 3 experimental <script setup> SFCs
-// Check out https://github.com/vuejs/rfcs/blob/master/active-rfcs/0040-script-setup.md
 </script>
 
 <style></style>

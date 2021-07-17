@@ -27,7 +27,7 @@ body {
 }
 
 .deleteBtn {
-    @apply border-l-2 py-2 px-3 bg-blue-400 rounded-md shadow-md hover:bg-blue-300
+    @apply border-l-2 py-2 px-3 bg-blue-400 rounded-md shadow-md hover:bg-blue-300 transition ease-in-out duration-500
 }
 
 .btnCSS {
