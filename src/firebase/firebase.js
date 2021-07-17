@@ -29,6 +29,6 @@ export const getTodoItem = async () => {
   return snapshot;
 };
 
-export const deleteTodo = (docId) => {
-    todoCollection.doc(docId).delete()
+export const deleteTodo = async (docId) => {
+    return await todoCollection.doc(docId).delete()
 }
