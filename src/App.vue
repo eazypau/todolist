@@ -1,14 +1,46 @@
 <template>
   <div>
     <div class="priorityFilter">
-      <div>
-        <p class="font-semibold">Priority filter:</p>
+      <div v-if="!filter" class="absolute right-0 pb-4 border-b-2">
+        <a href="#" @click="filter = true">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            class="bi bi-arrow-left-short h-10"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+            />
+          </svg>
+        </a>
       </div>
-      <div class="flex flex-col justify-around h-60">
-        <button @click="filterAll" :class="allBtn">All</button>
-        <button @click="filterHigh" :class="highBtn">High</button>
-        <button @click="filterMed" :class="medBtn">Medium</button>
-        <button @click="filterLow" :class="lowBtn">Low</button>
+      <div v-if="filter">
+        <div class="absolute -top-0 -left-0 rounded-tl-md">
+          <a href="#" @click="filter = false">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="bi bi-arrow-right-short h-8"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div>
+          <p class="font-semibold">Priority filter:</p>
+        </div>
+        <div class="flex flex-col justify-around h-60">
+          <button @click="filterAll" :class="allBtn">All</button>
+          <button @click="filterHigh" :class="highBtn">High</button>
+          <button @click="filterMed" :class="medBtn">Medium</button>
+          <button @click="filterLow" :class="lowBtn">Low</button>
+        </div>
       </div>
     </div>
     <div class="headerContainer">
@@ -77,6 +109,7 @@
 <script>
 import { addTodoItem, getTodoItem } from "../src/firebase/firebase.js";
 import Table from "../src/components/Table.vue";
+import { ref } from "@vue/reactivity";
 
 export default {
   data() {
@@ -88,6 +121,7 @@ export default {
       allBtn: "active",
       item: "",
       priorityLevel: "",
+      filter: false,
     };
   },
   components: { Table },
@@ -104,7 +138,6 @@ export default {
         this.todos.push(todosData);
         console.log("successfully read from firestore");
       });
-
     };
     return gettingAllTodos();
   },
@@ -127,7 +160,7 @@ export default {
       addTodoItem(docId, container);
       console.log("Successfully added");
       this.item = "";
-      this.priorityLevel= ""
+      this.priorityLevel = "";
     },
     filterHigh() {
       if ((this.highBtn = "btnCSS")) {
