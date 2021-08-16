@@ -33,13 +33,14 @@
           </a>
         </div>
         <div>
-          <p class="font-semibold">Priority filter:</p>
+          <p class="font-semibold mt-3">Priority filter:</p>
         </div>
         <div class="flex flex-col justify-around h-60">
           <button @click="filterAll" :class="allBtn">All</button>
           <button @click="filterHigh" :class="highBtn">High</button>
           <button @click="filterMed" :class="medBtn">Medium</button>
           <button @click="filterLow" :class="lowBtn">Low</button>
+          <button @click="filterDone" :class="doneBtn">Done</button>
         </div>
       </div>
     </div>
@@ -52,7 +53,7 @@
           class="inputContainer"
           type="text"
           name="todoItem"
-          placeholder="Press key in then press Enter to add todos"
+          placeholder="Key in description and press Enter to add todos"
           v-model="item"
           @keypress.enter="addTodo"
           required
@@ -71,10 +72,6 @@
           <option value="Low">Low</option>
         </select>
       </div>
-
-      <!-- <ul class="listContainer">
-        <li @click="deleteTodo" class="border-b-2 py-4 rounded-b-xl" v-for="todo, index in todos" :key="index" :data-link="index">{{ todo }}</li>
-      </ul> -->
       <table class="listContainer">
         <thead class="border-b-2">
           <tr>
@@ -85,21 +82,7 @@
           </tr>
         </thead>
         <tbody>
-          <Table :post="post" v-for="(post, index) in todos" :key="index" />
-          <!-- <tr
-            :class="todo.lineItem"
-            v-for="(todo, index) in todos"
-            :key="index"
-            :data-link="index"
-          >
-            <td class="w-2/12 py-4">{{ todo.date }}</td>
-            <td class="w-6/12 break-words py-4">{{ todo.description }}</td>
-            <td class="w-3/12 py-4">{{ todo.priority }}</td>
-            <td class="w-1/12">
-              <button @click="deleteTodo" class="deleteBtn">Delete</button>
-              <p class="hidden">{{ todo.id }}</p>
-            </td>
-          </tr> -->
+          <Table :post="post" v-for="(post, index) in todos" :key="post.id" @remove-todo=removeTodo(index) />
         </tbody>
       </table>
     </div>
@@ -109,7 +92,6 @@
 <script>
 import { addTodoItem, getTodoItem } from "../src/firebase/firebase.js";
 import Table from "../src/components/Table.vue";
-import { ref } from "@vue/reactivity";
 
 export default {
   data() {
@@ -119,6 +101,7 @@ export default {
       medBtn: "btnCSS",
       lowBtn: "btnCSS",
       allBtn: "active",
+      doneBtn: "btnCSS",
       item: "",
       priorityLevel: "",
       filter: false,
@@ -128,12 +111,11 @@ export default {
   created() {
     const gettingAllTodos = async () => {
       const gettingAllDocs = await getTodoItem();
-      console.log(gettingAllDocs);
+      // console.log(gettingAllDocs);
       // const listOfDocs = gettingAllDocs.docs;
       // console.log(listOfDocs);
-
       gettingAllDocs.forEach((doc) => {
-        console.log(doc.id, "=>", doc.data());
+        // console.log(doc.id, "=>", doc.data());
         const todosData = doc.data();
         this.todos.push(todosData);
         console.log("successfully read from firestore");
@@ -162,6 +144,11 @@ export default {
       this.item = "";
       this.priorityLevel = "";
     },
+    removeTodo(index) {
+      this.todos.splice(index, 1)
+      console.log("Successfully remove item.");
+      console.log(this.to);
+    },
     filterHigh() {
       if ((this.highBtn = "btnCSS")) {
         this.highBtn = "active";
@@ -170,7 +157,7 @@ export default {
         this.lowBtn = "btnCSS";
         for (let i = 0; i < this.todos.length; i++) {
           const todo = this.todos[i];
-          if (todo.priority === "Low" || todo.priority === "Medium") {
+          if (todo.priority === "Low" || todo.priority === "Medium" || todo.priority === "Done") {
             todo.lineItem += " " + "hidden";
           } else {
             todo.lineItem = "border-t-2";
@@ -183,6 +170,7 @@ export default {
         this.allBtn = "active";
         this.highBtn = "btnCSS";
         this.medBtn = "btnCSS";
+        this.doneBtn = "btnCSS";
         this.lowBtn = "btnCSS";
         for (let i = 0; i < this.todos.length; i++) {
           const todo = this.todos[i];
@@ -195,10 +183,11 @@ export default {
         this.highBtn = "btnCSS";
         this.allBtn = "btnCSS";
         this.medBtn = "active";
+        this.doneBtn = "btnCSS";
         this.lowBtn = "btnCSS";
         for (let i = 0; i < this.todos.length; i++) {
           const todo = this.todos[i];
-          if (todo.priority === "High" || todo.priority === "Low") {
+          if (todo.priority === "High" || todo.priority === "Low" || todo.priority === "Done") {
             todo.lineItem += " " + "hidden";
           } else {
             todo.lineItem = "border-t-2";
@@ -211,10 +200,36 @@ export default {
         this.highBtn = "btnCSS";
         this.allBtn = "btnCSS";
         this.medBtn = "btnCSS";
+        this.doneBtn = "btnCSS";
         this.lowBtn = "active";
         for (let i = 0; i < this.todos.length; i++) {
           const todo = this.todos[i];
-          if (todo.priority === "Medium" || todo.priority === "High") {
+          if (
+            todo.priority === "Medium" ||
+            todo.priority === "High" ||
+            todo.priority === "Done"
+          ) {
+            todo.lineItem += " " + "hidden";
+          } else {
+            todo.lineItem = "border-t-2";
+          }
+        }
+      }
+    },
+    filterDone() {
+      if ((this.doneBtn = "btnCSS")) {
+        this.highBtn = "btnCSS";
+        this.allBtn = "btnCSS";
+        this.medBtn = "btnCSS";
+        this.lowBtn = "btnCSS";
+        this.doneBtn = "active";
+        for (let i = 0; i < this.todos.length; i++) {
+          const todo = this.todos[i];
+          if (
+            todo.priority === "Medium" ||
+            todo.priority === "High" ||
+            todo.priority === "Low"
+          ) {
             todo.lineItem += " " + "hidden";
           } else {
             todo.lineItem = "border-t-2";
