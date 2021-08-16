@@ -16,14 +16,19 @@ export const addTodoItem = (docId, todoItem) => {
 };
 
 export const getTodoItem = async () => {
-//   const todoDocs = todoCollection.doc();
   const snapshot = await todoCollection.get();
-  console.log(snapshot);
-//   const listOfTodo = getTodo.data
-//   console.log(listOfTodo);
+  // console.log(snapshot);
   return snapshot;
 };
 
 export const deleteTodo = async (docId) => {
     return await todoCollection.doc(docId).delete()
+}
+
+export const updateStatus = async (docId, newStatus) => {
+  return await todoCollection.doc(docId).update({ priority: newStatus })
+}
+
+export const updateTodoDescription = async (docId, newDescription) => {
+  return await todoCollection.doc(docId).update({ description: newDescription })
 }
