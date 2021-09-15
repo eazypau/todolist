@@ -23,7 +23,7 @@ body {
 }
 
 .listContainer {
-    @apply w-9/12 bg-white text-lg shadow-lg rounded-b-xl text-center
+    @apply w-9/12 bg-white text-lg shadow-lg rounded-b-xl text-center mb-10
 }
 
 .deleteBtn {
