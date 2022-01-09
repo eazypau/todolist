@@ -1,4 +1,4 @@
-# Todo list
+# Todo Web App
 
 A simply todo list with priority filtering features using Vuejs, TailwindCSS and Firebase. Here is the link to the web app: https://bloginvue-2c3c7.web.app/
 
