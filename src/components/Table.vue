@@ -4,7 +4,7 @@
     <td class="w-6/12 break-words py-4">
       <p v-if="!edit">{{ post.description }}</p>
       <input
-        class="border-2 text-center rounded-md"
+        class="border-2 text-center rounded-md w-full bg-gray-50"
         v-else
         type="text"
         v-model="post.description"
@@ -37,7 +37,7 @@
           />
         </svg>
       </button>
-      <button @click="deleteTodo" class="deleteBtn">
+      <button v-if="!edit" @click="deleteTodo" class="deleteBtn">
         <svg
           v-if="post.priority === 'Done'"
           xmlns="http://www.w3.org/2000/svg"

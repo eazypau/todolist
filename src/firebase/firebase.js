@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 const firebaseConfig = {
-
+  // insert key here
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
